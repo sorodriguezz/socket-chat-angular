@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService } from '../../chat.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-chat',
@@ -71,9 +72,33 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.isButtonEditDisabled = !this.isButtonEditDisabled;
   }
 
+  async copyToClipboard() {
+    await navigator.clipboard.writeText(this.roomName);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: '¡ID de sala copiado!',
+    });
+  }
+
   setUserName(userName: string) {
     if (this.userName.trim() === '') {
-      alert('Por favor, establece un nombre de usuario.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, establece un nombre de usuario.',
+      });
       return;
     }
 
@@ -96,7 +121,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
 
     if (!uuidRegex.test(roomName)) {
-      alert('Por favor, ingrese un ID con formato valido.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, ingrese un ID con formato valido.',
+      });
       return;
     }
 
@@ -106,7 +135,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.changeButtonCreateJoin();
       this.isButtonsDisabled = false;
     } else {
-      alert('Por favor, establece un nombre de usuario y elige una sala.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, establece un nombre de usuario y elige una sala.',
+      });
     }
   }
 
@@ -131,7 +164,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.userName.trim() === '') {
-      alert('Por favor, establece tu nombre primero.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, establece tu nombre primero.',
+      });
       return;
     }
 

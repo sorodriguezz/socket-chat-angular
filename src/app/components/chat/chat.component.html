@@ -50,6 +50,7 @@
           class="form-control"
           placeholder="Ingrese ID de la sala..."
           [(ngModel)]="roomName"
+          (keydown.enter)="joinExistingRoom(roomName)"
         />
         <button class="btn btn-primary" (click)="joinExistingRoom(roomName)">
           Unir
@@ -62,7 +63,7 @@
   <ng-container *ngIf="isChatDisabled">
     <div class="mb-3">
       <div class="input-group">
-        <span class="input-group-text" id="basic-addon3">ID sala</span>
+        <span (click)="copyToClipboard()" class="input-group-text cursor" id="basic-addon3">ID sala</span>
         <input type="text" class="form-control" readonly [value]="roomName" />
       </div>
     </div>
@@ -98,6 +99,7 @@
         class="form-control"
         placeholder="Escribe tu mensaje"
         [(ngModel)]="newMessage"
+        (keydown.enter)="sendMessage()"
       />
       <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
     </div>
