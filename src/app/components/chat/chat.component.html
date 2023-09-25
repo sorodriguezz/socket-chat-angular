@@ -23,10 +23,10 @@
 
           <button
             *ngIf="!isButtonEditDisabled"
-            class="btn btn-warning"
+            class="btn btn-outline-warning"
             (click)="editName()"
           >
-            Modificar Nombre
+            Modificar
           </button>
         </ng-container>
       </div>
@@ -48,7 +48,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="ID de la sala"
+          placeholder="Ingrese ID de la sala..."
           [(ngModel)]="roomName"
         />
         <button class="btn btn-primary" (click)="joinExistingRoom(roomName)">
@@ -63,19 +63,14 @@
     <div class="mb-3">
       <div class="input-group">
         <span class="input-group-text" id="basic-addon3">ID sala</span>
-        <input
-          type="text"
-          class="form-control"
-          readonly
-          [value]="roomName"
-        />
+        <input type="text" class="form-control" readonly [value]="roomName" />
       </div>
     </div>
     <!-- Sección para leer mensajes -->
     <div
       class="chat-messages mb-4"
       style="
-        height: 400px;
+        height: 600px;
         overflow-y: scroll;
         border: 1px solid #ccc;
         padding: 10px;
@@ -85,10 +80,13 @@
         <span
           class="badge mr-2"
           [ngClass]="
-            message.sender.split(' | ')[1] === userName ? 'text-bg-primary' : 'text-bg-dark'
+            message.sender.split(' | ')[1] === userName
+              ? 'text-bg-primary'
+              : 'text-bg-dark'
           "
           >{{ message.sender }}</span
-        >&nbsp;&nbsp;&nbsp;&nbsp;
+        >
+        <span *ngIf="message.sender">&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <span>{{ message.text }}</span>
       </div>
     </div>
@@ -102,10 +100,12 @@
         [(ngModel)]="newMessage"
       />
       <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
-      <!-- Sección para salir de una sala -->
-      <button class="btn btn-danger" (click)="leaveCurrentRoom()">
-        Salir de Sala
+    </div>
+    <div class="d-grid gap-2 mt-4">
+      <button class="btn btn-outline-danger" (click)="leaveCurrentRoom()">
+        Salir de la sala
       </button>
     </div>
+    <!-- Sección para salir de una sala -->
   </ng-container>
 </div>
