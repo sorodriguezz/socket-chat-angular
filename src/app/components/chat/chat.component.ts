@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked,
+} from '@angular/core';
 import { ChatService } from '../../chat.service';
 import Swal from 'sweetalert2';
 
@@ -7,7 +14,9 @@ import Swal from 'sweetalert2';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('scrollAnchor') private scrollAnchor!: ElementRef;
+
   // flags input name
   isButtonEditDisabled: boolean = true;
   isInputDisabled: boolean = false;
@@ -29,6 +38,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages: Array<{ sender: string; text: string }> = [];
 
   constructor(private chatService: ChatService) {}
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
 
   ngOnInit() {
     // this.chatService.onUserConnected().subscribe((data) => {
@@ -56,6 +69,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         text: message,
       });
     });
+  }
+
+  private scrollToBottom(): void {
+    this.scrollAnchor.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
   changeChatDisabled() {
