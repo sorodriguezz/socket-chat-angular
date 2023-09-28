@@ -63,7 +63,12 @@
   <ng-container *ngIf="isChatDisabled">
     <div class="mb-3">
       <div class="input-group">
-        <span (click)="copyToClipboard()" class="input-group-text cursor" id="basic-addon3">ID sala</span>
+        <span
+          (click)="copyToClipboard()"
+          class="input-group-text cursor"
+          id="basic-addon3"
+          >ID sala</span
+        >
         <input type="text" class="form-control" readonly [value]="roomName" />
       </div>
     </div>
@@ -77,18 +82,43 @@
         padding: 10px;
       "
     >
-      <div *ngFor="let message of messages" class="mb-1">
-        <span
-          class="badge mr-2"
-          [ngClass]="
-            message.sender.split(' | ')[1] === userName
-              ? 'text-bg-primary'
-              : 'text-bg-dark'
-          "
-          >{{ message.sender }}</span
-        >
-        <span *ngIf="message.sender">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span>{{ message.text }}</span>
+      <div
+        *ngFor="let message of messages"
+        class="mb-1"
+        [ngClass]="{
+          'text-end': !(message.sender.split(' | ')[1] === userName),
+          'text-center text-muted': message.sender === ''
+        }"
+      >
+        <ng-container *ngIf="!(message.sender.split(' | ')[1] === userName)">
+          <span>{{ message.text }}</span>
+          <span *ngIf="message.sender">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span
+            class="badge mr-2"
+            [ngClass]="
+              message.sender.split(' | ')[1] === userName
+                ? 'text-bg-primary'
+                : 'text-bg-dark'
+            "
+            >{{ message.sender.split(" | ")[1] }}
+            {{ message.sender ? "|" : undefined }}
+            {{ message.sender.split(" | ")[0] }}</span
+          >
+        </ng-container>
+
+        <ng-container *ngIf="message.sender.split(' | ')[1] === userName">
+          <span
+            class="badge mr-2"
+            [ngClass]="
+              message.sender.split(' | ')[1] === userName
+                ? 'text-bg-primary'
+                : 'text-bg-dark'
+            "
+            >{{ message.sender }}</span
+          >
+          <span *ngIf="message.sender">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>{{ message.text }}</span>
+        </ng-container>
       </div>
       <div #scrollAnchor></div>
     </div>
